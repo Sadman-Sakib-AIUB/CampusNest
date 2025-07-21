@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe } from "@nestjs/common";
+import { Controller, Get, Param, ParseIntPipe,Post,Body } from "@nestjs/common";
 import { AdminService } from "./admin.service";
 
 @Controller('admin')
@@ -13,6 +13,11 @@ export class AdminController{
     @Get("/:id")
     getAdminById(@Param('id', ParseIntPipe) adminId: number):string{
         return this.adminService.getAdminbyId(adminId);
+    }
+
+    @Post("create")
+    createAdmin(@Body() body: string): string {
+        return this.adminService.createAdmin();
     }
 
 }
