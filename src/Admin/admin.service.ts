@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { AdminDto } from "./admin.dto";
 
 @Injectable()
 export class AdminService{
@@ -10,7 +11,12 @@ export class AdminService{
         return "Admin Id:" + AdminId;
     }
 
-    createAdmin():string{
-        return "New Admin Created";
+    // createAdmin():string{
+    //     return "New Admin Created";
+    // }
+
+
+    createAdmin(createAdmin:AdminDto){
+        return createAdmin;
     }
 }
