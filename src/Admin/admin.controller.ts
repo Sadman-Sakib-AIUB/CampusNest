@@ -9,27 +9,30 @@ import {
   ValidationPipe,
   UseInterceptors,
   UploadedFile,
+  Patch,
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { AdminDto } from './admin.dto';
+import { AdminDto, UpdateStatusDto } from './admin.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage, MulterError } from 'multer';
+import { AdminEntity } from './admin.entity';
 
 @Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
+
 
   @Get()
   getAdmin(): string {
     return this.adminService.getAdmin();
   }
 
-  @Get('/:id')
-  getAdminById(@Param('id', ParseIntPipe) adminId: number): string {
-    return this.adminService.getAdminbyId(adminId);
-  }
+  // @Get('/:id')
+  // getAdminById(@Param('id', ParseIntPipe) adminId: number): string {
+  //   return this.adminService.getAdminbyId(adminId);
+  // }
 
-  @Post('upload')
+  @Post('create')
   @UsePipes(new ValidationPipe())
   @UseInterceptors(
     FileInterceptor('file', {
@@ -57,4 +60,32 @@ export class AdminController {
     adminDto.acCalendar = file.filename;
     return this.adminService.createAdmin(adminDto);
     }
+
+
+    @Get('allAdmin')
+    getAllAdmin(){
+      return this.adminService.getAllAdmin();
+    }
+
+    @Patch(':id/status')
+    updateStatus(
+    @Param('id') id: number,
+    @Body() updateStatusDto: UpdateStatusDto) {
+    return this.adminService.updateStatus(id, updateStatusDto);
+    }
+
+    @Get('inactive')
+    getInactiveAdmins() {
+      return this.adminService.getInactiveAdmins();
+    }
+
+    @Get('older-than/:age')
+    getUsersOlderThan(@Param('age') age: number) {
+      return this.adminService.getUsersOlderThan(Number(age));
+    }
+
+
+
+
+    
 }
